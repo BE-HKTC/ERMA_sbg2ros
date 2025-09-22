@@ -7,7 +7,9 @@ def generate_launch_description():
 	config = os.path.join(
 		get_package_share_directory('sbg_driver'),
 		'config',
-		'sbg_device_uart_default.yaml'
+		'example',
+		'ellipse_D_default.yaml'
+		#'sbg_device_uart_default.yaml'
 	)
 
 	return LaunchDescription([

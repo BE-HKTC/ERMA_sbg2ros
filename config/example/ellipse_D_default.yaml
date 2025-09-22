@@ -27,11 +27,13 @@
       initFrameId: "map"
 
     # Configuration of the device with ROS.
-    confWithRos: true
+    confWithRos: false
 
     uartConf:
       # Port Name
-      portName: "/dev/ttyUSB0"
+      portName: "/dev/sbg-device"
+      #portName: "/dev/ttyUSB0"
+      #portName: "/dev/ttyUSB3"
 
       # Baude rate (4800 ,9600 ,19200 ,38400 ,115200 [default],230400 ,460800 ,921600)
       baudRate: 921600
@@ -65,7 +67,7 @@
       # 3 MARINE          Used in marine and underwater applications
       # 4 AIRPLANE        For fixed wings aircraft
       # 5 HELICOPTER      For rotary wing aircraft
-      motionProfile: 1
+      motionProfile: 2
 
     # IMU_ALIGNMENT_LEVER_ARM
     imuAlignementLeverArm:
@@ -92,11 +94,11 @@
       # Residual yaw error after axis alignment rad
       misYaw: 0.0
       # X Primary lever arm in IMU X axis (once IMU alignment is applied) m
-      leverArmX: 0.0
+      leverArmX: 1.9
       # Y Primary lever arm in IMU Y axis (once IMU alignment is applied) m
-      leverArmY: 0.0
+      leverArmY: 0.2
       # Z Primary lever arm in IMU Z axis (once IMU alignment is applied) m
-      leverArmZ: 0.0
+      leverArmZ: 2.66
 
     # AIDING_ASSIGNMENT
     # Note: GNSS1 module configuration can only be set to an external port on Ellipse-E version.
@@ -119,14 +121,14 @@
       # 5 Synchronization is internal
       # 6 Synchronization is done using SYNC_OUT_A pin
       # 7 Synchronization is done using SYNC_OUT_B pin
-      gnss1ModuleSyncAssignment: 5
+      gnss1ModuleSyncAssignment: 1
       # RTCM input port assignment for Ellipse-N DGPS (see gnss1ModulePortAssignment for values)
-      rtcmPortAssignment: 255
+      rtcmPortAssignment: 1
       # Odometer module pin assignment
       # 0 Odometer is disabled
       # 1 Odometer connected only to ODO_A (unidirectional).
       # 2 Odometer connected to both ODO_A (signal A) and ODO_B (Signal B or direction) for bidirectional odometer.
-      odometerPinAssignment: 0
+      odometerPinAssignment: 2
 
     magnetometer:
       # Magnetometer model ID
@@ -168,27 +170,27 @@
       gnss_model_id: 107
 
       #GNSS primary antenna lever arm in IMU X axis (m)
-      primaryLeverArmX: 0.0
+      primaryLeverArmX: 1.9
       #GNSS primary antenna lever arm in IMU Y axis (m)
-      primaryLeverArmY: 0.0
+      primaryLeverArmY: 0.4
       #GNSS primary antenna lever arm in IMU Z axis (m)
-      primaryLeverArmZ: 0.0
+      primaryLeverArmZ: 2.66
       #GNSS primary antenna precise. Set to true if the primary lever arm has been accurately entered and doesn't need online re-estimation.
-      primaryLeverPrecise: false
-
+      primaryLeverPrecise: true
+    
       #GNSS secondary antenna lever arm in IMU X axis (m)
-      secondaryLeverArmX: 0.0
+      secondaryLeverArmX: 1.9
       #GNSS secondary antenna lever arm in IMU Y axis (m)
-      secondaryLeverArmY: 0.0
+      secondaryLeverArmY: -0.51
       #GNSS secondary antenna lever arm in IMU Z axis (m)
-      secondaryLeverArmZ: 0.0
+      secondaryLeverArmZ: 2.66
 
       # Secondary antenna operating mode.
       # 1 The GNSS will be used in single antenna mode only and the secondary lever arm is not used.
       # 2 [Reserved] The GNSS dual antenna information will be used but the secondary lever arm is not known.
       # 3 The GNSS dual antenna information will be used and we have a rough guess for the secondary lever arm.
       # 4 The GNSS dual antenna information will be used and the secondary lever arm is accurately entered and doesn't need online re-estimation.
-      secondaryLeverMode: 3
+      secondaryLeverMode: 4
 
       # Rejection mode for position
       # 0 Measurement is not taken into account
@@ -212,17 +214,16 @@
       direction: false
 
       # Odometer lever arm in IMU X axis (m)
-      leverArmX: 0.0
+      leverArmX: 1.9
       # Odometer lever arm in IMU Y axis (m)
-      leverArmY: 0.0
+      leverArmY: 0.2
       # Odometer lever arm in IMU Z axis (m)
-      leverArmZ: 0.0
-
+      leverArmZ: 2.66
       # Odometer rejection mode
       # 0 Measurement is not taken into account
       # 1 Measurement is rejected if inconsistent with current estimate (depending on error model)
       # 2 Measurement is always accepted
-      rejectMode: 1
+      rejectMode: 2
 
     # ToDo: event & CAN configuration
 
@@ -263,37 +264,37 @@
       #
       # true : ENU convention (X east, Y north, Z up)
       # false (default): NED convention (X north, Y east, Z down)
-      use_enu: false
+      use_enu: true
 
       # Frame ID:
       # Note: If the frame convention is NED so the default frame ID is (imu_link_ned)
       #       else if the convention is ENU so the default frame ID is (imu_link)
-      frame_id: "imu_link_ned"
+      frame_id: "imu_link"
 
       # Status general, clock, com aiding, solution, heave
       log_status: 8
       # Includes IMU status, acc., gyro, temp delta speeds and delta angles values
       log_imu_data: 8
       # Includes roll, pitch, yaw and their accuracies on each axis
-      log_ekf_euler: 0
+      log_ekf_euler: 8
       # Includes the 4 quaternions values
       log_ekf_quat: 8
       # Position and velocities in NED coordinates with the accuracies on each axis
       log_ekf_nav: 8
       # Velocity expressed in the INS body/vehicle frame
-      log_ekf_vel_body: 0
+      log_ekf_vel_body: 8
       # Rotations rate and accelerations in the INS body/vehicle frame
-      log_ekf_rot_accel_body: 0
+      log_ekf_rot_accel_body: 8
       # Rotations rate and accelerations in North, East, Down (NED) navigation frame
-      log_ekf_rot_accel_ned: 0
+      log_ekf_rot_accel_ned: 8
       # Heave, surge and sway and accelerations on each axis for up to 4 points
-      log_ship_motion: 0
+      log_ship_motion: 8
       # Provides UTC time reference
       log_utc_time: 8
       # Magnetic data with associated accelerometer on each axis
       log_mag: 8
       # Magnetometer calibration data (raw buffer)
-      log_mag_calib: 0
+      log_mag_calib: 8
       # GPS velocities from primary or secondary GPS receiver
       log_gps1_vel: 10001
       # GPS positions from primary or secondary GPS receiver
@@ -303,13 +304,29 @@
       # GPS 1 raw data for post processing.
       log_gps1_raw: 10001
       # Provides odometer velocity
-      log_odo_vel: 0
+      log_odo_vel: 8
       # Event A/B/C/D Event markers sent when events are detected on a sync in pin
       log_event_a: 0
       log_event_b: 0
       log_event_c: 0
       log_event_d: 0
       # Air data
-      log_air_data: 0
+      log_air_data: 8
       # Short IMU data
-      log_imu_short: 0
+      log_imu_short: 8
+      
+    rtcm:
+      # Should ros driver subscribe to RTCM topic
+      subscribe: true
+      # Topic on which RTCM is published
+      topic_name: rtcm
+      # Namespace where topic is published
+      namespace: ntrip_client
+
+    nmea:
+      # Should ros driver publish NMEA string
+      publish: true
+      # Topic on which to publish nmea data
+      topic_name: nmea
+      # Namespace where to publish topic
+      namespace: ntrip_client
