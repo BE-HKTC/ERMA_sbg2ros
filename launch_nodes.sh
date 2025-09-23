@@ -21,8 +21,11 @@ log "Launching nodes (ROS_DOMAIN_ID=$ROS_DOMAIN_ID LOG_LEVEL=$LOG_LEVEL)" INFO
 source /opt/ros/humble/setup.bash
 source /sbg_driver_pkg_ws/install/setup.bash
 
-log "ros2 run sbg_driver_pkg sbg_driver_node" INFO
-ros2 run sbg_driver_pkg sbg_driver_node &
+log "ros2 launch sbg_driver sbg_device_launch.py" INFO
+ros2 launch sbg_driver sbg_device_launch.py & 
+
+log "ros2 launch ntrip_client ntrip_client_launch.py" INFO
+ros2 launch ntrip_client ntrip_client_launch.py &
 
 wait
 log "All nodes have exited." INFO

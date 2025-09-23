@@ -1,0 +1,5 @@
+# List any git repos (one per line) to clone in your workspace/src before colcon build
+git@github.com:BE-HKTC/ERMA_ntrip.git
+git@github.com:BE-HKTC/ERMA_custom_msg_pkg_sbg.git
+git@github.com:BE-HKTC/ERMA_nmea_custom_msg_pkg.git
+git@github.com:BE-HKTC/ERMA_rtcm_custom_msg_pkg.git
