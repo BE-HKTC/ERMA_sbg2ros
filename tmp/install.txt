@@ -1,0 +1,12 @@
+# List your apt-get dependencies here, separated by lines
+# They will be injected in the Dockerfile (see below)
+# The sections below are separated by lines starting with ###
+
+### BUILD
+build-essential
+git
+openssh-client
+
+### RUNTIME
+ros-humble-rmw-cyclonedds-cpp
+python3-pip

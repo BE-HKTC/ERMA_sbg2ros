@@ -1,0 +1,38 @@
+# === Build Stage ===
+FROM ros:humble-ros-base AS builder
+COPY install.txt /tmp/install.txt
+RUN set -e;     BUILD_DEPS="$(awk '/^### BUILD/{flag=1;next}/^###/{flag=0} flag && !/^#/ && NF' /tmp/install.txt | xargs)";     apt-get update && apt-get install -y $BUILD_DEPS && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /sbg_driver_pkg_ws/src
+WORKDIR /sbg_driver_pkg_ws
+COPY sbg_driver_pkg src/sbg_driver_pkg
+COPY subrepo_dependencies.txt /tmp/
+RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
+RUN --mount=type=ssh set -e; \
+    cd src; \
+    grep -v '^#' /tmp/subrepo_dependencies.txt | grep -v '^$' | while read repo; do \
+        echo "Cloning $repo..."; \
+        git clone $repo; \
+    done
+RUN . /opt/ros/humble/setup.sh && colcon build
+
+# === Runtime Stage ===
+FROM ros:humble-ros-core
+COPY install.txt /tmp/install.txt
+RUN set -e;     RUN_DEPS="$(awk '/^### RUNTIME/{flag=1;next}/^###/{flag=0} flag && !/^#/ && NF' /tmp/install.txt | xargs)";     apt-get update && apt-get install -y $RUN_DEPS && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt /tmp/
+RUN pip3 install -r /tmp/requirements.txt || \
+    (echo -e "\n❌ ERROR: Check your requirements.txt for typos or missing packages!\n" && cat /tmp/requirements.txt && exit 1)
+COPY --from=builder /sbg_driver_pkg_ws/install /sbg_driver_pkg_ws/install
+RUN mkdir -p /sbg_driver_pkg_ws/log /sbg_driver_pkg_ws/build /sbg_driver_pkg_ws/src
+# Mount/copy the shared files
+COPY sbg_driver_pkg /robot_shared_directory/sbg_driver_pkg
+COPY data /robot_shared_directory/data
+RUN echo "source /sbg_driver_pkg_ws/install/setup.bash" >> ~/.bashrc
+WORKDIR /sbg_driver_pkg_ws
+COPY container_root/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+COPY launch_nodes.sh /launch_nodes.sh
+RUN chmod +x /launch_nodes.sh
+COPY settings.txt /settings.txt
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash", "/launch_nodes.sh"]

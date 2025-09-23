@@ -1,0 +1,4 @@
+# Project-wide settings (edit as needed)
+# For ROS 2 multi-machine setups, set the same value everywhere!
+ROS_DOMAIN_ID=0
+LOG_LEVEL=INFO   # Possible values: DEBUG, INFO, ERROR

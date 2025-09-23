@@ -1,0 +1,44 @@
+services:
+  sbg_driver_pkg:
+    profiles: ["prod"]
+    container_name: sbg_driver_pkg
+    build:
+      context: .
+      dockerfile: Dockerfile.sbg_driver_pkg
+      ssh:
+        - default
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - robot_shared_directory:/robot_shared_directory
+      - ./settings.txt:/settings.txt:ro
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    command:
+      - bash
+      - /launch_nodes.sh
+
+  sbg_driver_pkg_dev:
+    profiles: ["dev"]
+    container_name: sbg_driver_pkg_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.sbg_driver_pkg
+      ssh:
+        - default
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - robot_shared_directory:/robot_shared_directory
+      - ./settings.txt:/settings.txt:ro
+      - ./sbg_driver_pkg:/robot_shared_directory/sbg_driver_pkg
+      - ./data:/robot_shared_directory/data
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    command:
+      - bash
+      - /launch_nodes.sh
+
+volumes:
+  robot_shared_directory:
+    external: true
