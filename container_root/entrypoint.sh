@@ -20,8 +20,8 @@ log "Entrypoint starting" INFO
 
 source /opt/ros/humble/setup.bash
 log "Sourced /opt/ros/humble/setup.bash" DEBUG
-source /sbg_driver_pkg_ws/install/setup.bash
-log "Sourced /sbg_driver_pkg_ws/install/setup.bash" DEBUG
+source /sbg_driver_ws/install/setup.bash
+log "Sourced /sbg_driver_ws/install/setup.bash" DEBUG
 
 log "Entrypoint ready. Exec: $*" INFO
 exec "$@"

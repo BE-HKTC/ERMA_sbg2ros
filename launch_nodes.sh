@@ -19,13 +19,20 @@ fi
 
 log "Launching nodes (ROS_DOMAIN_ID=$ROS_DOMAIN_ID LOG_LEVEL=$LOG_LEVEL)" INFO
 source /opt/ros/humble/setup.bash
-source /sbg_driver_pkg_ws/install/setup.bash
+source /sbg_driver_ws/install/setup.bash
 
 log "ros2 launch sbg_driver sbg_device_launch.py" INFO
 ros2 launch sbg_driver sbg_device_launch.py & 
-
 log "ros2 launch ntrip_client ntrip_client_launch.py" INFO
-ros2 launch ntrip_client ntrip_client_launch.py &
+ros2 launch ntrip_client ntrip_client_launch.py \
+  host:=crtk.net \
+  port:=2101 \
+  mountpoint:=ETAB \
+  username:=centipede \
+  password:=centipede
 
 wait
 log "All nodes have exited." INFO
+
+
+
