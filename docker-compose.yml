@@ -9,9 +9,16 @@ services:
         - default
     network_mode: host
     restart: unless-stopped
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    group_add:
+      - dialout
     volumes:
       - robot_shared_directory:/robot_shared_directory
       - ./settings.txt:/settings.txt:ro
+      - ./sbg_driver:/robot_shared_directory/sbg_driver
+      - ./data:/robot_shared_directory/data
+      - /dev/sbg-device:/dev/sbg-device
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
     command:
