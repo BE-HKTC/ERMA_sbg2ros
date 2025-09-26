@@ -190,7 +190,7 @@
       # 2 [Reserved] The GNSS dual antenna information will be used but the secondary lever arm is not known.
       # 3 The GNSS dual antenna information will be used and we have a rough guess for the secondary lever arm.
       # 4 The GNSS dual antenna information will be used and the secondary lever arm is accurately entered and doesn't need online re-estimation.
-      secondaryLeverMode: 4
+      secondaryLeverMode: 3
 
       # Rejection mode for position
       # 0 Measurement is not taken into account
@@ -223,7 +223,7 @@
       # 0 Measurement is not taken into account
       # 1 Measurement is rejected if inconsistent with current estimate (depending on error model)
       # 2 Measurement is always accepted
-      rejectMode: 2
+      rejectMode: 1
 
     # ToDo: event & CAN configuration
 
