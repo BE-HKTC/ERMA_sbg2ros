@@ -31,8 +31,8 @@
 
     uartConf:
       # Port Name
-      portName: "/dev/sbg-device"
-      #portName: "/dev/ttyUSB0"
+     # portName: "/dev/sbg-device"
+      portName: "/dev/ttyUSB0"
       #portName: "/dev/ttyUSB3"
 
       # Baude rate (4800 ,9600 ,19200 ,38400 ,115200 [default],230400 ,460800 ,921600)

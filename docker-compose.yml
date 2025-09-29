@@ -9,8 +9,6 @@ services:
         - default
     network_mode: host
     restart: unless-stopped
-    devices:
-      - /dev/ttyUSB0:/dev/ttyUSB0
     group_add:
       - dialout
     volumes:

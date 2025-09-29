@@ -22,14 +22,28 @@ source /opt/ros/humble/setup.bash
 source /sbg_driver_ws/install/setup.bash
 
 log "ros2 launch sbg_driver sbg_device_launch.py" INFO
-ros2 launch sbg_driver sbg_device_launch.py & 
-log "ros2 launch ntrip_client ntrip_client_launch.py" INFO
+ros2 launch sbg_driver sbg_device_launch.py > /tmp/sbg_driver.log 2>&1 &
+PID_SBG=$!
+
+
+( timeout 20s grep -m1 "SBG_TIME_OUT" <(tail -f -n0 /tmp/sbg_driver.log) && \
+  log "❌ SBG_TIME_OUT détecté → redémarrage container" ERROR && \
+  kill $PID_SBG && exit 1 ) &
+
+
+
+log "ros2 launch ntrip_client ntrip_client_launch.py   host:=crtk.net \
+  port:=2101 \
+  mountpoint:=ETAB \
+  username:=centipede \
+  password:=centipede
+ " INFO
 ros2 launch ntrip_client ntrip_client_launch.py \
   host:=crtk.net \
   port:=2101 \
   mountpoint:=ETAB \
   username:=centipede \
-  password:=centipede
+  password:=centipede &
 
 wait
 log "All nodes have exited." INFO
